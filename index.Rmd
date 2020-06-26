@@ -1,0 +1,455 @@
+---
+title: "Introduction to R"
+author:
+  - "Derek Strong"
+  - "Research Computing Associate"
+date: "2020-06-26"
+output:
+  slidy_presentation:
+    highlight: monochrome
+    df_print: paged
+    css: slides.css
+    footer: "Center for Advanced Research Computing / University of Southern California"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Outline
+
+- Basic concepts
+- Importing data
+- Summarizing data
+- Visualizing data
+- Modeling data
+- Workflows
+
+
+## Basic concepts
+
+- Base R
+- Objects
+- Functions
+- Data structures
+
+
+## What is R?
+
+![](images/Rlogo.png)
+
+A programming environment and language for statistical computing and graphics
+
+
+## Why R?
+
+- designed for statistical computing
+- free/libre/open source
+- diverse community of users
+
+
+## Installing R
+
+Instructions from CRAN: https://cran.r-project.org/
+
+
+## Using R
+
+To start a new R session:
+
+```
+$ R
+
+R version 4.0.0 (2020-04-24) -- "Arbor Day"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+>
+```
+
+
+## R sessions
+
+```
+> sessionInfo()
+R version 4.0.0 (2020-04-24)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: CentOS Linux 7 (Core)
+
+Matrix products: default
+BLAS:   /R/4.0.0/lib64/R/lib/libRblas.so
+LAPACK: /R/4.0.0/lib64/R/lib/libRlapack.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base
+
+loaded via a namespace (and not attached):
+[1] compiler_4.0.0
+```
+
+
+## Navigation
+
+Directories and files:
+
+- `getwd()`
+- `setwd()`
+- `list.files()`
+
+
+## Arithmetic operators
+
+- `+`
+- `-`
+- `*`
+- `/`
+- `^`
+- `%/%`
+- `%%`
+
+
+## Base R
+
+- A stable set of core packages
+  - `stats`, `graphics`, `grDevices`, `utils`, `datasets`, `methods`, `base`
+- Loaded when starting a new R session
+- Other packages extend base R
+  - A package is a formal collection of related R code and functions that makes sharing and documenting easier
+  - [CRAN](https://cran.r-project.org/)
+  - [Bioconductor](https://www.bioconductor.org/)
+
+
+## Objects and functions
+
+> To understand computations in R, two slogans are helpful:
+>
+> - Everything that exists is an **object**.
+> - Everything that happens is a **function** call.
+>
+> — John Chambers, co-creator of R
+
+
+## R objects
+
+An object is a data structure with certain attributes.
+
+```{r}
+vec <- c(1, 2, 3, 4)
+```
+
+`vec` is the object
+
+`<-` is the assignment operator
+
+```{r}
+str(vec)
+```
+
+
+## The functional perspective
+
+input object (argument) &rarr; `function()` &rarr; output object (value)
+
+For example:
+
+data frame &rarr; `summary()` &rarr; table of summary statistics
+
+
+## R functions
+
+A function is a unit of code that takes input(s) and produces output(s).
+
+```{r}
+print("Hello world")
+```
+
+`print()` is R's default function.
+
+```{r}
+"Hello world"
+```
+
+
+## Generic structure of R functions
+
+`func(arg1, arg2, ...)`
+
+- `func` &rarr; function name  
+- `arg1` &rarr; arguments passed to function  
+- `...` &rarr; other optional arguments
+
+Arguments can be optional and may also have default values.
+
+*Sometimes argument names should be made explicit when assigning values (e.g., `arg2 = value`)*
+
+
+## Function example: `str()`
+
+```{r}
+str(iris)
+str(iris, vec.len = 2)
+```
+
+Can also use `utils::str()`
+
+
+## Nesting functions
+
+```{r}
+str(print("hello world"))
+```
+
+Alternative:
+
+```
+char <- print("hello world")
+str(char)
+rm(char)
+```
+
+
+## Getting help
+
+For specific package or function:
+
+```
+?str
+```
+
+For general search:
+
+```
+??str
+```
+
+
+## Data structures
+
+- Homogeneous
+  - atomic vector (one-dimensional)
+  - matrix (two-dimensional)
+  - array (n-dimensional)
+
+- Heterogeneous
+  - list (vector with heterogeneous contents)
+  - data frame (matrix * list)
+
+
+## Importing data
+
+Different functions depending on data type:
+
+- `read.table()`, `read.csv()`, `read.delim()`
+- `scan()`
+- Other packages:
+  - `readr`, `haven`, `data.table`, `vroom`, `hdf5r`
+
+
+## Importing text files
+
+```{r}
+data <- read.csv("iris.csv", stringsAsFactors = FALSE)
+head(data)
+```
+
+
+## Exporting data
+
+Different functions depending on data type:
+
+- `write.table()`, `write.csv()`
+- `write()`
+- Other packages:
+  - `readr`, `haven`, `data.table`, `vroom`, `hdf5r`
+
+
+## Subsetting data
+
+Three subsetting operators, different uses and behaviors:
+
+- `x[ ]` - preserves data structure
+- `x[[ ]]` - simplifies data structure
+- `x$<name>`
+
+```
+iris[ , 1:2]
+iris[1:2, ]
+iris[1:2, 1:2]
+iris[[1]]
+iris2 <- iris$Sepal.Length
+iris2
+```
+
+- Other packages:
+  - `dplyr`, `data.table`
+
+
+## Logical operators
+
+- `==`
+- `>` or `>=`
+- `<` or `<=`
+- `!=`
+- `!`
+- `&` or `&&`
+- `|` or `||`
+- `isTRUE()` or `isFALSE()`
+- `any()`
+- `all()`
+
+
+## Filtering data
+
+Using logical operators:
+
+```
+iris[iris$Species == "setosa", ]
+iris3 <- iris[iris$Sepal.Length > 5 & iris$Sepal.Width < 3, ]
+iris3
+```
+
+
+## Summarizing data
+
+```{r}
+summary(iris)
+```
+
+
+## Summarizing subset of data
+
+```{r}
+summary(iris[ , 1:2])
+```
+
+
+## Missing values
+
+Missing values are indicated as `NA`
+
+```{r}
+missing <- c(1, 2, 3, NA)
+is.na(missing)
+anyNA(missing)
+missing[!is.na(missing)]
+```
+
+Many functions have an `na.rm` argument.
+
+
+## Visualizing data
+
+```{r}
+plot(iris$Sepal.Length, iris$Sepal.Width)
+```
+
+
+## Graphics functions
+
+- `plot()`, `pairs()`, `boxplot()`, `hist()`
+- `dotchart()`, `mosaicplot()`, `contour()`
+- Other packages:
+  - `ggplot2`, `leaflet`, `plotly`, `shiny`
+
+
+## Modeling data
+
+Base `stats` package has many statistical functions:
+
+- `lm()` for linear models
+- `glm()` for generalized linear models
+- See more: `library(help = "stats")`
+- Many other packages
+
+
+## Estimating a linear model
+
+```{r}
+lm(Sepal.Length ~ Sepal.Width + Species, iris)
+model <- lm(Sepal.Length ~ Sepal.Width + Species, iris)
+AIC(model)
+BIC(model)
+```
+
+
+## Control flow and iteration
+
+- `if ( ) { } else { }`
+- `ifelse()`
+- Two approaches to iteration:
+  - `for ( ) { }` and `while ( ) { }` loops
+  - `*apply()` family of functions
+    - `lapply()`, `sapply()`, `vapply()`, `tapply()`, `mapply()`
+
+
+## Iteration example: `lapply()`
+
+```{r}
+data <- data.frame(matrix(rnorm(5), ncol = 5))
+lapply(data, mean)
+```
+
+
+## R scripts
+
+A script is a collection of commands run in sequence.
+
+- Documents your analysis and workflows, enables reproducibility
+- Text file saved with `.R` extension
+- Write comments by starting line with `#`
+- To run:
+  - Inside R session: `source()`
+  - At the command line: `Rscript`
+
+
+## Debugging
+
+Basic workflow:
+
+- check object types
+- check function arguments
+- use `debug()` and `traceback()`
+
+
+## Packages to consider
+
+- `tidyverse`
+  - `readr`, `dplyr`, `tidyr`, `purrr`
+- `data.table` for speed and SQL-like syntax
+- `skimr` for better summary statistics
+- `ggplot2` and `shiny` for advanced graphics
+- `sf` for spatial data
+
+
+## Additional resources
+
+- `install.packages("swirl")`
+- [Software Carpentry Lessons](https://software-carpentry.org/lessons/)
+- [R Manuals](https://cran.r-project.org/manuals.html)
+- Books
+  - [Hands-on Programming with R](https://rstudio-education.github.io/hopr/)
+  - [R Programming for Data Science](https://bookdown.org/rdpeng/rprogdatascience/)
+  - [R for Data Science](https://r4ds.had.co.nz/)
