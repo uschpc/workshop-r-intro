@@ -1,15 +1,11 @@
 ---
 title: "Introduction to R"
-author:
-  - "Derek Strong"
-  - "Research Computing Associate"
-date: "2020-06-26"
+author: "Derek Strong <br> Research Computing Associate <br> CARC / USC"
+date: "2021-01-19"
 output:
-  slidy_presentation:
-    highlight: monochrome
-    df_print: paged
-    css: slides.css
-    footer: "Center for Advanced Research Computing / University of Southern California"
+  ioslides_presentation:
+    widescreen: true
+    smaller: true
 ---
 
 ```{r setup, include = FALSE}
@@ -134,8 +130,7 @@ Directories and files:
 ## Base R
 
 - A stable set of core packages
-  - `stats`, `graphics`, `grDevices`, `utils`, `datasets`, `methods`, `base`
-- Loaded when starting a new R session
+- Basic core packages loaded when starting a new R session
 - Other packages extend base R
   - A package is a formal collection of related R code and functions that makes sharing and documenting easier
   - [CRAN](https://cran.r-project.org/)
