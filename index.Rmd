@@ -1,7 +1,7 @@
 ---
 title: "Introduction to R"
-author: "Derek Strong <br> Research Computing Associate <br> CARC / USC"
-date: "2021-01-19"
+author: "Derek Strong <br> dstrong[at]usc.edu <br> Research Computing Associate <br> CARC at USC"
+date: "2021-02-12"
 output:
   ioslides_presentation:
     widescreen: true
@@ -16,26 +16,22 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Outline
 
 - Basic concepts
-- Importing data
+- Importing/exporting data
 - Summarizing data
 - Visualizing data
 - Modeling data
-- Workflows
-
-
-## Basic concepts
-
-- Base R
-- Objects
-- Functions
-- Data structures
+- Control flow
+- Iteration
+- Scripts
 
 
 ## What is R?
 
 ![](images/Rlogo.png)
 
-A programming environment and language for statistical computing and graphics
+- A programming environment and language for statistical computing and graphics
+  - A multi-paradigm programming language
+  - A high-level (human-friendly) interpreted scripting language
 
 
 ## Why R?
@@ -47,14 +43,24 @@ A programming environment and language for statistical computing and graphics
 
 ## Installing R
 
-Instructions from CRAN: https://cran.r-project.org/
+Instructions on [CRAN](https://cran.r-project.org/)
 
 
 ## Using R
 
-To start a new R session:
+Command-line interface (CLI):
 
-```
+- Interactive mode: `R`
+- Batch mode: `Rscript`
+
+On CARC systems: `module load r`
+
+
+## R console
+
+To start a new interactive R session:
+
+```{r, eval = FALSE}
 $ R
 
 R version 4.0.0 (2020-04-24) -- "Arbor Day"
@@ -79,9 +85,26 @@ Type 'q()' to quit R.
 ```
 
 
+## Basic concepts
+
+- Base R and packages
+- Objects
+- Data types and structures
+- Functions
+
+
+## Base R and packages
+
+- A package is a formal collection of related R functions, objects, classes, etc.
+- Base R is a stable set of core packages
+- Some base packages are loaded automatically when starting a new R session
+- Other packages that extend base R need to be installed
+- There's more than one way to do something in R
+
+
 ## R sessions
 
-```
+```{r, eval = FALSE}
 > sessionInfo()
 R version 4.0.0 (2020-04-24)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -106,6 +129,211 @@ loaded via a namespace (and not attached):
 [1] compiler_4.0.0
 ```
 
+*To quit, enter `q()`*
+
+
+## Arithmetic operators
+
+- `+` &rarr; addition
+- `-` &rarr; subtraction
+- `*` &rarr; multiplication
+- `/` &rarr; division
+- `^` &rarr; exponentiation
+- `%/%` &rarr; integer division
+- `%%` &rarr; modulo
+
+Example for addition:
+
+```{r}
+2 + 2
+```
+
+
+## Objects and functions
+
+Two fundamental principles:
+
+1. Everything that exists in R is an **object**
+2. Everything that happens in R is a **function** call
+
+
+## Objects
+
+- An object is anything stored in the R environment
+- Typically a data structure with associated attributes
+- A data structure is composed of data types
+- Could also be a function, a plot, etc.
+
+
+## Data types
+
+Five data types:
+
+- integer
+- double (aka, numeric)
+- character (aka, string)
+- factor (categories)
+- logical (`TRUE` / `FALSE`)
+
+
+## Data structures
+
+- Structures with homogeneous data types
+  - atomic vector (one-dimensional)
+  - matrix (two-dimensional)
+  - array (n-dimensional)
+
+- Structures with heterogeneous data types
+  - list (vector with heterogeneous contents)
+  - data frame (matrix + list)
+
+
+## Creating objects
+
+Assign value to a name. Example for a simple vector:
+
+```{r}
+vec <- c(1, 2, 3, 4)
+```
+
+`vec` is the name of the object
+
+`<-` is the assignment operator
+
+`c(1, 2, 3, 4)` is the value of the object
+
+```{r}
+str(vec)
+```
+
+Use `ls()` to list objects  
+Use `rm()` to remove objects
+
+
+## The data frame
+
+- Most used data structure
+- Mix of numeric, character, factor, etc.
+
+```{r}
+head(iris)
+str(iris)
+```
+
+
+## The functional perspective
+
+R is best used as a functional programming language
+
+input object (argument) &rarr; `function()` &rarr; output object (value)
+
+For example:
+
+data frame &rarr; `summary()` &rarr; table of summary statistics
+
+
+## Functions
+
+A function is a unit of code that takes an input and produces an output
+
+Generic structure of functions in R:
+
+```{r, eval = FALSE}
+func(arg1, arg2, ...)
+```
+
+- `func` &rarr; function name
+- `arg1`, `arg2` &rarr; arguments passed to function
+- `...` &rarr; other optional arguments
+
+*Arguments can be optional and may also have default values*
+
+*Sometimes argument names should be made explicit when assigning values (e.g., `arg3 = value`)*
+
+
+## Function example: `summary()`
+
+```{r}
+summary(iris)
+summary(iris, digits = 5)
+```
+
+Can also use syntax `package::func()` (if package is not loaded)
+
+
+## Nesting functions
+
+```{r}
+str(summary(iris))
+```
+
+Alternative approach:
+
+```{r}
+sum <- summary(iris)
+str(sum)
+rm(sum)
+```
+
+
+## Creating functions
+
+Define a function and assign it a name
+
+Simple example:
+
+```{r}
+math <- function(x, y) {
+  z <- x + y
+  z * x
+}
+
+math(2, 2)
+```
+
+*Create functions when reusing code frequently*
+
+
+## Installing packages
+
+Main repositories:
+
+- [CRAN](https://cran.r-project.org/)
+- [Bioconductor](https://www.bioconductor.org/)
+
+Install with:
+
+```{r, eval = FALSE}
+install.packages("data.table")
+```
+
+Load with:
+
+```{r, eval = FALSE}
+library(data.table)
+```
+
+
+## Getting help
+
+For specific function:
+
+```{r eval = FALSE}
+?str
+```
+
+For general search:
+
+```{r eval = FALSE}
+??str
+```
+
+For specific package:
+
+```{r eval = FALSE}
+library(help = "utils")
+```
+
 
 ## Navigation
 
@@ -115,215 +343,92 @@ Directories and files:
 - `setwd()`
 - `list.files()`
 
-
-## Arithmetic operators
-
-- `+`
-- `-`
-- `*`
-- `/`
-- `^`
-- `%/%`
-- `%%`
-
-
-## Base R
-
-- A stable set of core packages
-- Basic core packages loaded when starting a new R session
-- Other packages extend base R
-  - A package is a formal collection of related R code and functions that makes sharing and documenting easier
-  - [CRAN](https://cran.r-project.org/)
-  - [Bioconductor](https://www.bioconductor.org/)
-
-
-## Objects and functions
-
-> To understand computations in R, two slogans are helpful:
->
-> - Everything that exists is an **object**.
-> - Everything that happens is a **function** call.
->
-> — John Chambers, co-creator of R
-
-
-## R objects
-
-An object is a data structure with certain attributes.
-
-```{r}
-vec <- c(1, 2, 3, 4)
-```
-
-`vec` is the object
-
-`<-` is the assignment operator
-
-```{r}
-str(vec)
-```
-
-
-## The functional perspective
-
-input object (argument) &rarr; `function()` &rarr; output object (value)
-
-For example:
-
-data frame &rarr; `summary()` &rarr; table of summary statistics
-
-
-## R functions
-
-A function is a unit of code that takes input(s) and produces output(s).
-
-```{r}
-print("Hello world")
-```
-
-`print()` is R's default function.
-
-```{r}
-"Hello world"
-```
-
-
-## Generic structure of R functions
-
-`func(arg1, arg2, ...)`
-
-- `func` &rarr; function name  
-- `arg1` &rarr; arguments passed to function  
-- `...` &rarr; other optional arguments
-
-Arguments can be optional and may also have default values.
-
-*Sometimes argument names should be made explicit when assigning values (e.g., `arg2 = value`)*
-
-
-## Function example: `str()`
-
-```{r}
-str(iris)
-str(iris, vec.len = 2)
-```
-
-Can also use `utils::str()`
-
-
-## Nesting functions
-
-```{r}
-str(print("hello world"))
-```
-
-Alternative:
-
-```
-char <- print("hello world")
-str(char)
-rm(char)
-```
-
-
-## Getting help
-
-For specific package or function:
-
-```
-?str
-```
-
-For general search:
-
-```
-??str
-```
-
-
-## Data structures
-
-- Homogeneous
-  - atomic vector (one-dimensional)
-  - matrix (two-dimensional)
-  - array (n-dimensional)
-
-- Heterogeneous
-  - list (vector with heterogeneous contents)
-  - data frame (matrix * list)
+*Organize R projects in unique directories*
 
 
 ## Importing data
 
-Different functions depending on data type:
+Different functions depending on data format:
 
-- `read.table()`, `read.csv()`, `read.delim()`
-- `scan()`
+- `read.table()`, `read.csv()`, `read.delim()` &rarr; text files
+- `scan()` &rarr; matrix file
+- `readRDS()`, `load()` &rarr; R format (binary)
 - Other packages:
   - `readr`, `haven`, `data.table`, `vroom`, `hdf5r`
+  - Other packages for SQL databases
 
 
-## Importing text files
+## Importing CSV file
 
 ```{r}
-data <- read.csv("iris.csv", stringsAsFactors = FALSE)
+data <- read.csv("orange.csv")
 head(data)
 ```
 
 
 ## Exporting data
 
-Different functions depending on data type:
+Different functions depending on data structure:
 
-- `write.table()`, `write.csv()`
-- `write()`
+- `write.table()`, `write.csv()` &rarr; text files
+- `write()` &rarr; matrix
+- `saveRDS()`, `save()` &rarr; R format (binary)
 - Other packages:
   - `readr`, `haven`, `data.table`, `vroom`, `hdf5r`
 
 
+## Exporting CSV file
+
+```{r, eval = FALSE}
+write.csv(data, file = "data.csv", row.names = FALSE)
+```
+
+
 ## Subsetting data
 
-Three subsetting operators, different uses and behaviors:
+Three subsetting operators with different uses and behaviors:
 
-- `x[ ]` - preserves data structure
-- `x[[ ]]` - simplifies data structure
-- `x$<name>`
+- `x[ ]` &rarr; preserves data structure
+- `x[[ ]]` &rarr; simplifies data structure
+- `x$<name>` &rarr; simplifies data structure
 
-```
+Some examples:
+
+```{r, eval = FALSE}
 iris[ , 1:2]
 iris[1:2, ]
 iris[1:2, 1:2]
 iris[[1]]
-iris2 <- iris$Sepal.Length
-iris2
+iris$Sepal.Length
 ```
 
 - Other packages:
   - `dplyr`, `data.table`
 
 
-## Logical operators
+## Logical comparisons and operators
 
-- `==`
-- `>` or `>=`
-- `<` or `<=`
-- `!=`
-- `!`
-- `&` or `&&`
-- `|` or `||`
-- `isTRUE()` or `isFALSE()`
-- `any()`
-- `all()`
+- `==` &rarr; equal to
+- `!=` &rarr; not equal to
+- `<` &rarr; lesser than
+- `>` &rarr; greater than
+- `<=` &rarr; lesser than or equal to
+- `>=` &rarr; greater than or equal to
+- `!` &rarr; NOT (negation)
+- `&` or `&&` &rarr; AND (meet multiple conditions)
+- `|` or `||` &rarr; OR (one of multiple conditions)
+- `isTRUE()`, `isFALSE()`
+- `any()`, `all()`
 
 
-## Filtering data
+## Subsetting data using logical comparisons
 
-Using logical operators:
-
-```
+```{r, eval = FALSE}
 iris[iris$Species == "setosa", ]
-iris3 <- iris[iris$Sepal.Length > 5 & iris$Sepal.Width < 3, ]
-iris3
+iris[iris$Sepal.Length > 5 & iris$Sepal.Width < 3, ]
+iris[iris$Sepal.Length > 5 | iris$Sepal.Width < 3, ]
+iris[[1]]
+iris$Sepal.Length
 ```
 
 
@@ -352,17 +457,12 @@ anyNA(missing)
 missing[!is.na(missing)]
 ```
 
-Many functions have an `na.rm` argument.
+*Many functions have an `na.rm` argument to ignore/remove missing values*
 
 
 ## Visualizing data
 
-```{r}
-plot(iris$Sepal.Length, iris$Sepal.Width)
-```
-
-
-## Graphics functions
+Graphics functions:
 
 - `plot()`, `pairs()`, `boxplot()`, `hist()`
 - `dotchart()`, `mosaicplot()`, `contour()`
@@ -370,12 +470,33 @@ plot(iris$Sepal.Length, iris$Sepal.Width)
   - `ggplot2`, `leaflet`, `plotly`, `shiny`
 
 
+## Creating a scatterplot
+
+```{r}
+plot(iris$Sepal.Length, iris$Sepal.Width)
+```
+
+
+## Creating a time series plot
+
+```{r}
+plot(Nile)
+```
+
+
+## Creating a histogram
+
+```{r}
+hist(iris$Sepal.Length)
+```
+
+
 ## Modeling data
 
-Base `stats` package has many statistical functions:
+The base `stats` package has many statistical functions:
 
-- `lm()` for linear models
-- `glm()` for generalized linear models
+- `lm()` &rarr; linear models
+- `glm()` &rarr; generalized linear models
 - See more: `library(help = "stats")`
 - Many other packages
 
@@ -390,14 +511,43 @@ BIC(model)
 ```
 
 
-## Control flow and iteration
+## Control flow
+
+If this do that, else do something else
 
 - `if ( ) { } else { }`
-- `ifelse()`
-- Two approaches to iteration:
-  - `for ( ) { }` and `while ( ) { }` loops
-  - `*apply()` family of functions
-    - `lapply()`, `sapply()`, `vapply()`, `tapply()`, `mapply()`
+- `ifelse()` &rarr; vectorized
+
+
+## Control flow example
+
+```{r}
+math <- function(x, y) {
+  z <- x + y
+  
+  if (z > 10) {
+    z * 2
+  } else {
+    z / 2
+  }
+}
+
+math(2, 2)
+
+math(7, 7)
+```
+
+
+## Iteration
+
+Do the same thing to multiple inputs
+
+Two approaches to iteration:
+
+- `for ( ) { }` and `while ( ) { }` loops
+- `*apply()` family of functions &rarr; vectorized, preferred approach
+  - `lapply()`, `sapply()`, `vapply()`, `tapply()`, `mapply()`
+  - return different data structures
 
 
 ## Iteration example: `lapply()`
@@ -410,41 +560,48 @@ lapply(data, mean)
 
 ## R scripts
 
-A script is a collection of commands run in sequence.
-
+- A script is a set of commands run in sequence
 - Documents your analysis and workflows, enables reproducibility
 - Text file saved with `.R` extension
 - Write comments by starting line with `#`
 - To run:
-  - Inside R session: `source()`
-  - At the command line: `Rscript`
+  - Within R console: `source()`
+  - In the shell: `Rscript`
 
 
-## Debugging
+## Script example
 
-Basic workflow:
+```{r, eval = FALSE}
+# Summarize subset of iris data
 
-- check object types
-- check function arguments
-- use `debug()` and `traceback()`
+setosa <- iris[iris$Species == "setosa", ]
+
+summary(setosa)
+```
+
+Save  as `setosa.R`
+
+In the shell, run with `Rscript setosa.R`
 
 
 ## Packages to consider
 
-- `tidyverse`
-  - `readr`, `dplyr`, `tidyr`, `purrr`
-- `data.table` for speed and SQL-like syntax
+- `data.table` for speed
+- `tidyverse` family of packages
+  - `readr`, `tidyr`, `dplyr`, `purrr`
 - `skimr` for better summary statistics
-- `ggplot2` and `shiny` for advanced graphics
+- `ggplot2` for advanced graphics
 - `sf` for spatial data
 
 
 ## Additional resources
 
+- [Using R on CARC Systems](https://carc.usc.edu/user-information/user-guides/software-and-programming/r)
 - `install.packages("swirl")`
-- [Software Carpentry Lessons](https://software-carpentry.org/lessons/)
+- [R for Reproducible Scientific Analysis lessons](https://swcarpentry.github.io/r-novice-gapminder/)
 - [R Manuals](https://cran.r-project.org/manuals.html)
-- Books
+- Web books
   - [Hands-on Programming with R](https://rstudio-education.github.io/hopr/)
+  - [An Introduction to R](https://intro2r.com/)
   - [R Programming for Data Science](https://bookdown.org/rdpeng/rprogdatascience/)
   - [R for Data Science](https://r4ds.had.co.nz/)
