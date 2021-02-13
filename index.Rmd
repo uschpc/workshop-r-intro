@@ -553,7 +553,7 @@ Two approaches to iteration:
 ## Iteration example: `lapply()`
 
 ```{r}
-data <- data.frame(matrix(rnorm(5), ncol = 5))
+data <- data.frame(matrix(rnorm(25), ncol = 5))
 lapply(data, mean)
 ```
 
