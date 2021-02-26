@@ -6,12 +6,25 @@ An introduction to the R programming environment and language for statistical co
 
 Slides: https://uschpc.github.io/workshop-r-intro/
 
+Example job scripts:
+
+- [serial.job](job-scripts/serial.job)
+- [multicore.job](job-scripts/multicore.job)
+
 ### Additional resources
 
-[CARC user guide for R](https://carc.usc.edu/user-information/user-guides/software-and-programming/r)  
+[Using R on CARC Systems](https://carc.usc.edu/user-information/user-guides/software-and-programming/r)  
+[R for Reproducible Scientific Analysis lessons](https://swcarpentry.github.io/r-novice-gapminder/)  
 [R Project](https://www.r-project.org)  
 [R Manuals](https://cran.r-project.org/manuals.html)  
-[R for Reproducible Scientific Analysis - Software Carpentry lesson](https://swcarpentry.github.io/r-novice-gapminder/)  
+[R Package Documentation](https://rdrr.io/)  
 [CRAN Task View on High-Performance and Parallel Computing with R](https://cran.r-project.org/web/views/HighPerformanceComputing.html)  
 [Programming with Big Data in R](https://pbdr.org/)  
-[rOpenSci](https://ropensci.org/)  
+[rOpenSci](https://ropensci.org/)
+
+Web books:
+
+[Hands-on Programming with R](https://rstudio-education.github.io/hopr/)  
+[An Introduction to R](https://intro2r.com/)  
+[R Programming for Data Science](https://bookdown.org/rdpeng/rprogdatascience/)  
+[R for Data Science](https://r4ds.had.co.nz/)
