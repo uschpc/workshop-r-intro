@@ -1,7 +1,7 @@
 ---
 title: "Introduction to R"
-author: "Derek Strong <br> dstrong[at]usc.edu <br> Research Computing Associate <br> CARC at USC"
-date: "2021-02-12"
+author: "Derek Strong <br> dstrong[at]usc.edu <br> Research Computing Associate <br> CARC at USC <br>"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output:
   ioslides_presentation:
     widescreen: true
@@ -167,25 +167,30 @@ Two fundamental principles:
 
 ## Data types
 
-Five data types:
+Atomic types:
 
-- integer
-- double (aka, numeric)
-- character (aka, string)
-- factor (categories)
+- double (aka numeric, floating point)
+- integer (aka numeric)
+- complex
+- character (string)
 - logical (`TRUE` / `FALSE`)
+- raw
+
+Other classes based on atomic types:
+
+- factor (categorical, based on integer)
+- Date, POSIXct, POSIXlt, difftime (based on double)
 
 
 ## Data structures
 
-- Structures with homogeneous data types
-  - atomic vector (one-dimensional)
-  - matrix (two-dimensional)
-  - array (n-dimensional)
+Based on dimensions and mix of data types:
 
-- Structures with heterogeneous data types
-  - list (vector with heterogeneous contents)
-  - data frame (matrix + list)
+|Dimensions|Homogeneous|Heterogeneous|
+|---|---|---|
+|1d|atomic vector|list|
+|2d|matrix|data frame|
+|nd|array||
 
 
 ## Creating objects
