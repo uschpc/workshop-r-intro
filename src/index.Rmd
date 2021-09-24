@@ -1,71 +1,119 @@
 ---
 title: "Introduction to R"
-author: "Derek Strong <br> dstrong[at]usc.edu <br> Research Computing Associate <br> CARC at USC <br>"
-date: "`r format(Sys.time(), '%Y-%m-%d')`"
+author: "Derek Strong <br> dstrong[at]usc.edu <br> <br> Center for Advanced Research Computing <br> University of Southern California <br>"
+date: "Last updated on `r format(Sys.time(), '%Y-%m-%d')`"
 output:
-  ioslides_presentation:
-    widescreen: true
-    smaller: true
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    nature:
+      ratio: "16:10"
+      titleSlideClass: ["left", "top"]
 ---
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r xaringan-themer, include = FALSE, warning = FALSE}
+library(xaringanthemer)
+style_mono_light(
+  base_color = "#27323f",
+  code_font_google   = google_font("Andale Mono"),
+  code_font_size = "0.8rem",
+  link_decoration = "underline",
+)
+```
+
+
+## Learning objectives
+
+- Explain the purpose of R
+- Use objects and functions
+- Perform basic data analysis tasks in R
+  - Read and write data
+  - Summarize data
+  - Visualize data
+  - Model data
+- Develop and run an R script
+- Use R on CARC systems
+
+---
 
 ## Outline
 
-- Basic concepts
-- Importing/exporting data
-- Summarizing data
-- Visualizing data
-- Modeling data
-- Control flow
-- Iteration
-- Scripts
+1. Base R and packages
+2. Objects and functions
+3. Importing and exporting data
+4. Summarizing data
+5. Visualizing data
+6. Modeling data
+7. Control flow
+8. Iteration
+9. Scripting
 
+---
 
 ## What is R?
 
-![](images/Rlogo.png)
+![R](./images/Rlogo.png)
 
 - A programming environment and language for statistical computing and graphics
   - A multi-paradigm programming language
   - A high-level (human-friendly) interpreted scripting language
 
+---
 
 ## Why R?
 
-- designed for statistical computing
-- free/libre/open source
-- diverse community of users
+- Main alternatives
+  - Python
+  - Julia
+  - Stata
+  - SAS
+- Advantages
+  - Designed for statistical computing
+  - Free/libre/open source
+  - Diverse community of users
+  - Interpreted language (easy to write code compared to compiled language)
+- Disadvantages
+  - Interpreted language (performance penalty)
+  - Two-language problem (improving performance with compiled language)
 
+---
 
 ## Installing R
 
-Instructions on [CRAN](https://cran.r-project.org/)
+- Find instructions on [CRAN](https://cran.r-project.org/)
+- Multiple versions installed on CARC systems
+  - `module load usc r`
+  - `module load usc r/<version>`
+- Also consider using an integrated development environment (IDE)
+  - [RStudio](https://www.rstudio.com/)
+  - [JupyterLab](https://jupyter.org/)
 
+---
 
 ## Using R
 
-Command-line interface (CLI):
+Two modes for the command-line interface (CLI):
 
-- Interactive mode: `R`
-- Batch mode: `Rscript`
+| Mode | Command |
+|---|---|
+| Interactive (console) | `R` |
+| Batch | `Rscript` |
 
-On CARC systems: `module load r`
-
+---
 
 ## R console
 
-To start a new interactive R session:
+Focus on the R console for learning R:
 
 ```{r, eval = FALSE}
 $ R
 
-R version 4.0.0 (2020-04-24) -- "Arbor Day"
-Copyright (C) 2020 The R Foundation for Statistical Computing
-Platform: x86_64-pc-linux-gnu (64-bit)
+R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin17.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -84,14 +132,21 @@ Type 'q()' to quit R.
 >
 ```
 
+---
 
-## Basic concepts
+## Arithmetic operators
 
-- Base R and packages
-- Objects
-- Data types and structures
-- Functions
+| Description | Operator |
+|---|---|
+| Addition | `+` |
+| Subtraction | `-` |
+| Multiplication | `*` |
+| Division | `/` |
+| Exponentiation | `^` or `**` |
+| Integer division | `%/%` |
+| Modulo | `%%` |
 
+---
 
 ## Base R and packages
 
@@ -99,55 +154,47 @@ Type 'q()' to quit R.
 - Base R is a stable set of core packages
 - Some base packages are loaded automatically when starting a new R session
 - Other packages that extend base R need to be installed
-- There's more than one way to do something in R
+  - On Linux, most packages are compiled (if they contain C/C++/Fortran programs)
+  - On macOS or Windows, binary versions are downloaded by default
 
+*There's more than one way to do something in R*
 
-## R sessions
+---
+
+## Installing and using packages
+
+Main repositories:
+
+- [CRAN](https://cran.r-project.org/)
+- [Bioconductor](https://www.bioconductor.org/)
+- Development versions from GitHub, GitLab, etc.
+
+Install or remove with:
 
 ```{r, eval = FALSE}
-> sessionInfo()
-R version 4.0.0 (2020-04-24)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: CentOS Linux 7 (Core)
-
-Matrix products: default
-BLAS:   /R/4.0.0/lib64/R/lib/libRblas.so
-LAPACK: /R/4.0.0/lib64/R/lib/libRlapack.so
-
-locale:
- [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C
- [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8
- [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8
- [7] LC_PAPER=en_US.UTF-8       LC_NAME=C
- [9] LC_ADDRESS=C               LC_TELEPHONE=C
-[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C
-
-attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base
-
-loaded via a namespace (and not attached):
-[1] compiler_4.0.0
+install.packages("package")
+BiocManager::install("package")
+remotes::install_github("org/package")
+remove.packages("package")
 ```
 
-*To quit, enter `q()`*
+Load with:
 
-
-## Arithmetic operators
-
-- `+` &rarr; addition
-- `-` &rarr; subtraction
-- `*` &rarr; multiplication
-- `/` &rarr; division
-- `^` &rarr; exponentiation
-- `%/%` &rarr; integer division
-- `%%` &rarr; modulo
-
-Example for addition:
-
-```{r}
-2 + 2
+```{r, eval = FALSE}
+library(package)
 ```
 
+*See [`renv`](https://cran.r-project.org/package=renv) package for reproducible package environments*
+
+---
+
+## Exercise 1
+
+Install and load the `data.table` package
+
+Get R session info with `sessionInfo()`
+
+---
 
 ## Objects and functions
 
@@ -156,6 +203,7 @@ Two fundamental principles:
 1. Everything that exists in R is an **object**
 2. Everything that happens in R is a **function** call
 
+---
 
 ## Objects
 
@@ -164,78 +212,155 @@ Two fundamental principles:
 - A data structure is composed of data types
 - Could also be a function, a plot, etc.
 
+---
 
 ## Data types
 
 Atomic types:
 
-- double (aka numeric, floating point)
+- double (aka numeric or floating point)
 - integer (aka numeric)
 - complex
-- character (string)
-- logical (`TRUE` / `FALSE`)
+- character (aka string)
+- logical (`TRUE` or `FALSE`)
 - raw
 
 Other classes based on atomic types:
 
 - factor (categorical, based on integer)
-- Date, POSIXct, POSIXlt, difftime (based on double)
+- Date, POSIXct, POSIXlt, difftime, ts (based on double)
 
+---
 
 ## Data structures
 
-Based on dimensions and mix of data types:
-
-|Dimensions|Homogeneous|Heterogeneous|
+| Dimensions | Homogeneous data type | Heterogeneous data types |
 |---|---|---|
-|1d|atomic vector|list|
-|2d|matrix|data frame|
-|nd|array||
+| 1d | atomic vector | list | 
+| 2d | matrix | data frame |
+| nd | array | |
 
+---
+
+## Functions for creating data structures
+
+| Data structure | Function | Coercion | Test |
+|---|---|---|---|
+| atomic vector | `c()` or `vector()` | `as.vector()` | `is.vector()` |
+| matrix | `matrix()` | `as.matrix()` | `is.matrix()` |
+| array | `array()` | `as.array()` | `is.array()` |
+| list | `list()` or `c()` or `vector()` | `as.list()` | `is.list()` |
+| data frame | `data.frame()` | `as.data.frame()` | `is.data.frame()` |
+
+---
 
 ## Creating objects
 
-Assign value to a name. Example for a simple vector:
+Create an object by assigning a value to a name
+
+Example for a simple vector:
 
 ```{r}
 vec <- c(1, 2, 3, 4)
 ```
 
-`vec` is the name of the object
+- `vec` is the name of the object
+- `<-` is the assignment operator
+- `c()` creates a vector object
+- `c(1, 2, 3, 4)` is the value of the object
 
-`<-` is the assignment operator
+---
 
-`c(1, 2, 3, 4)` is the value of the object
+## Inspecting objects
 
-```{r}
+- `ls()` to list objects
+- `rm()` to remove objects
+- `class()` to print class of object
+- `str()` to display the structure of an object
+
+Example for a simple vector:
+
+```{r, eval = FALSE}
+vec <- c(1, 2, 3, 4)
+ls()
+class(vec)
 str(vec)
+rm(vec)
 ```
 
-Use `ls()` to list objects  
-Use `rm()` to remove objects
+---
 
+## Missing values
+
+Missing values are represented by `NA` (considered logical)
+
+```{r, eval = FALSE}
+missing <- c(1, 2, 3, NA)
+is.na(missing)
+anyNA(missing)
+missing[!is.na(missing)]
+```
+
+*Many functions have an `na.rm` argument to ignore/remove missing values*
+
+---
 
 ## The data frame
 
-- Most used data structure
-- Mix of numeric, character, factor, etc.
+- Probably the most commonly used data structure
+- 2d with a mix of numeric, character, factor, etc. columns
+- Technically implemented as a list (set of vectors with the same length)
 
-```{r}
+Example:
+
+```{r, eval = FALSE}
+iris
 head(iris)
+tail(iris)
 str(iris)
+is.data.frame(iris)
+is.list(iris)
 ```
 
+---
+
+## The list
+
+- A generic vector for a collection of objects
+- Useful for iteration purposes
+
+Example:
+
+```{r, eval = FALSE}
+mix <- list(iris, uspop)
+str(mix)
+is.list(mix)
+as.list(iris)
+```
+
+---
+
+## Exercise 2
+
+Create a list of two atomic vectors of different types and lengths
+
+Display the structure of that list
+
+---
 
 ## The functional perspective
 
-R is best used as a functional programming language
+R is mostly used as a functional programming language
 
-input object (argument) &rarr; `function()` &rarr; output object (value)
+Inputs and outputs:
 
-For example:
+.center[input object (argument) &rarr; `func()` &rarr; output object (value)]
 
-data frame &rarr; `summary()` &rarr; table of summary statistics
+Example:
 
+.center[data frame &rarr; `summary()` &rarr; table of summary statistics]
+
+---
 
 ## Functions
 
@@ -247,286 +372,352 @@ Generic structure of functions in R:
 func(arg1, arg2, ...)
 ```
 
-- `func` &rarr; function name
-- `arg1`, `arg2` &rarr; arguments passed to function
-- `...` &rarr; other optional arguments
+- `func` is the function name
+- `arg1`, `arg2` are arguments passed to function
+- `...` represents other optional arguments
 
-*Arguments can be optional and may also have default values*
+Notes on using functions:
 
-*Sometimes argument names should be made explicit when assigning values (e.g., `arg3 = value`)*
+- Arguments can be optional and may have default values
+- Argument names may need to be made explicit (e.g., `arg3 = value`)
+- Can also use syntax `package::func()` (if package is not loaded)
+- `print()` is the default function
 
+---
 
-## Function example: `summary()`
+## Function example
 
-```{r}
+Variations of a `summary()` function call:
+
+```{r, eval = FALSE}
 summary(iris)
+summary(object = iris)
 summary(iris, digits = 5)
+base::summary(iris)
 ```
 
-Can also use syntax `package::func()` (if package is not loaded)
-
+---
 
 ## Nesting functions
 
-```{r}
+Function within a function example:
+
+```{r, eval = FALSE}
 str(summary(iris))
 ```
 
-Alternative approach:
+Or explicitly create intermediate objects:
 
-```{r}
+```{r, eval = FALSE}
 sum <- summary(iris)
 str(sum)
 rm(sum)
 ```
 
+Or use pipe operator `%>%` from `magrittr` package:
+
+```{r, eval = FALSE}
+library(magrittr)
+iris %>%
+  summary() %>%
+  str()
+```
+
+*May improve code readability*
+
+---
 
 ## Creating functions
 
 Define a function and assign it a name
 
-Simple example:
+Example:
 
-```{r}
+```{r, eval = FALSE}
 math <- function(x, y) {
   z <- x + y
   z * x
 }
-
-math(2, 2)
 ```
 
-*Create functions when reusing code frequently*
+- Create functions when reusing a set of code frequently
+- DRY principle (do not repeat yourself)
 
-
-## Installing packages
-
-Main repositories:
-
-- [CRAN](https://cran.r-project.org/)
-- [Bioconductor](https://www.bioconductor.org/)
-
-Install with:
-
-```{r, eval = FALSE}
-install.packages("data.table")
-```
-
-Load with:
-
-```{r, eval = FALSE}
-library(data.table)
-```
-
+---
 
 ## Getting help
 
 For specific function:
 
-```{r eval = FALSE}
-?str
+```{r, eval = FALSE}
+?func
 ```
 
 For general search:
 
-```{r eval = FALSE}
-??str
+```{r, eval = FALSE}
+??keyword
 ```
 
 For specific package:
 
-```{r eval = FALSE}
-library(help = "utils")
+```{r, eval = FALSE}
+library(help = "pkg")
 ```
 
+---
 
-## Navigation
+## Exercise 3
 
-Directories and files:
+Create a function that performs some sequence of arithmetic
+
+---
+
+## Working with files
+
+Main functions:
 
 - `getwd()`
 - `setwd()`
 - `list.files()`
 
-*Organize R projects in unique directories*
+*Best practice is to organize R project files in unique directories, use relative paths*
 
+---
 
-## Importing data
+## Importing and exporting data
 
-Different functions depending on data format:
+Best to avoid base R and use other packages:
 
-- `read.table()`, `read.csv()`, `read.delim()` &rarr; text files
-- `scan()` &rarr; matrix file
-- `readRDS()`, `load()` &rarr; R format (binary)
-- Other packages:
-  - `readr`, `haven`, `data.table`, `vroom`, `hdf5r`
-  - Other packages for SQL databases
+| Data format | Package |
+|---|---|
+| Text | `readr`, `vroom`, `data.table` |
+| Binary | `arrow` |
+| Foreign | `foreign`, `haven` |
+| Database | `odbc`, `DBI`, `RMariaDB`, `RPostgreSQL`, `RSQLite` |
+| HDF5 | `hdf5r` |
+| NetCDF | `ncdf4`, `RNetCDF` |
+| Spatial | `raster`, `sf`, `terra`, `stars` |
 
+---
 
-## Importing CSV file
+## Exercise 4
 
-```{r}
-data <- read.csv("orange.csv")
-head(data)
-```
+Import a CSV file using the `readr` package
 
+Export a CSV file using the `readr` package
 
-## Exporting data
+---
 
-Different functions depending on data structure:
+## Indexing operators
 
-- `write.table()`, `write.csv()` &rarr; text files
-- `write()` &rarr; matrix
-- `saveRDS()`, `save()` &rarr; R format (binary)
-- Other packages:
-  - `readr`, `haven`, `data.table`, `vroom`, `hdf5r`
+| Description | Operator |
+|---|---|
+| Select one or more elements or rows/columns | `x[ ]` |
+| Select one element or column | `x[[ ]]` |
+| Select one element or column by name | `x$name` |
 
-
-## Exporting CSV file
-
-```{r, eval = FALSE}
-write.csv(data, file = "data.csv", row.names = FALSE)
-```
-
-
-## Subsetting data
-
-Three subsetting operators with different uses and behaviors:
-
-- `x[ ]` &rarr; preserves data structure
-- `x[[ ]]` &rarr; simplifies data structure
-- `x$<name>` &rarr; simplifies data structure
+- Use indexing operators for replacing values or subsetting (aka slicing)
+- Subsetting will typically simplify data structure by default
 
 Some examples:
 
 ```{r, eval = FALSE}
+iris[1, 2] <- 3
 iris[ , 1:2]
 iris[1:2, ]
 iris[1:2, 1:2]
 iris[[1]]
+iris[[2]][1:4]
 iris$Sepal.Length
+iris$Sepal.Length <- NULL
+iris[["Species"]]
 ```
 
-- Other packages:
-  - `dplyr`, `data.table`
+---
 
+## Relational operators
 
-## Logical comparisons and operators
+| Relation | Operator |
+|---|---|
+| Equal to | `==` |
+| Not equal to | `!=` |
+| Lesser than | `<` |
+| Greater than | `>` |
+| Lesser than or equal to | `<=` |
+| Greater than or equal to | `>=` |
 
-- `==` &rarr; equal to
-- `!=` &rarr; not equal to
-- `<` &rarr; lesser than
-- `>` &rarr; greater than
-- `<=` &rarr; lesser than or equal to
-- `>=` &rarr; greater than or equal to
-- `!` &rarr; NOT (negation)
-- `&` or `&&` &rarr; AND (meet multiple conditions)
-- `|` or `||` &rarr; OR (one of multiple conditions)
-- `isTRUE()`, `isFALSE()`
-- `any()`, `all()`
+Some examples:
 
+```{r, eval = FALSE}
+iris[1, 2] == 2
+iris[1, 2] != 2
+iris[1, 2] >= 2
+```
 
-## Subsetting data using logical comparisons
+---
+
+## Logical operators
+
+| Logic | Operator |
+|---|---|
+| NOT (negation) | `!` |
+| Element-wise AND (multiple TRUE) | `&` |
+| AND (first element)  | `&&` |
+| Element-wise OR (one TRUE) | &vert; |
+| OR (first element) | &vert;&vert; |
+
+Some examples:
+
+```{r, eval = FALSE}
+!TRUE
+TRUE & TRUE
+TRUE & FALSE
+FALSE & FALSE
+TRUE | FALSE
+FALSE | FALSE
+```
+
+---
+
+## Subsetting examples
 
 ```{r, eval = FALSE}
 iris[iris$Species == "setosa", ]
+iris[iris$Species != "setosa", ]
 iris[iris$Sepal.Length > 5 & iris$Sepal.Width < 3, ]
+iris[iris$Sepal.Length > 5 & iris$Sepal.Width < 3, 1:2]
 iris[iris$Sepal.Length > 5 | iris$Sepal.Width < 3, ]
-iris[[1]]
-iris$Sepal.Length
 ```
 
+Other packages with subsetting functions:
+
+- `data.table`
+- `dplyr`
+
+---
 
 ## Summarizing data
 
-```{r}
+Some examples:
+
+```{r, eval = FALSE}
+str(iris)
+
 summary(iris)
-```
-
-
-## Summarizing subset of data
-
-```{r}
 summary(iris[ , 1:2])
+
+library(skimr)
+skim(iris)
 ```
 
+---
 
-## Missing values
+## Exercise 5
 
-Missing values are indicated as `NA`
+Summarize the airquality dataset
 
-```{r}
-missing <- c(1, 2, 3, NA)
-is.na(missing)
-anyNA(missing)
-missing[!is.na(missing)]
-```
-
-*Many functions have an `na.rm` argument to ignore/remove missing values*
-
+---
 
 ## Visualizing data
 
-Graphics functions:
+Many graphics functions:
 
-- `plot()`, `pairs()`, `boxplot()`, `hist()`
-- `dotchart()`, `mosaicplot()`, `contour()`
+- `plot()`, `pairs()`, `boxplot()`, `hist()`, `dotchart()`, `mosaicplot()`, `contour()`
+- `png()`, `jpeg()`, `tiff()`, `pdf()`
+- Many options for customizing graphics
 - Other packages:
-  - `ggplot2`, `leaflet`, `plotly`, `shiny`
+  - `ggplot2`
+  - `leaflet`
+  - `plotly`
+  - `shiny`
 
+---
 
-## Creating a scatterplot
+## Graphics examples
 
-```{r}
-plot(iris$Sepal.Length, iris$Sepal.Width)
-```
-
-
-## Creating a time series plot
-
-```{r}
-plot(Nile)
-```
-
-
-## Creating a histogram
-
-```{r}
+```{r, eval = FALSE}
 hist(iris$Sepal.Length)
+boxplot(iris$Sepal.Length)
+plot(iris$Sepal.Length, iris$Sepal.Width)
+
+png("uspop.png")
+plot(uspop)
+dev.off()
 ```
 
+---
+
+## Exercise 6
+
+Plot the discoveries dataset
+
+---
 
 ## Modeling data
 
 The base `stats` package has many statistical functions:
 
-- `lm()` &rarr; linear models
-- `glm()` &rarr; generalized linear models
+- `lm()` for linear models
+- `glm()` for generalized linear models
 - See more: `library(help = "stats")`
-- Many other packages
+- Many other packages for statistical modeling
 
+---
 
-## Estimating a linear model
+## Model examples
 
-```{r}
-lm(Sepal.Length ~ Sepal.Width + Species, iris)
+Linear model:
+
+```{r, eval = FALSE}
 model <- lm(Sepal.Length ~ Sepal.Width + Species, iris)
+summary(model)
 AIC(model)
 BIC(model)
 ```
 
+Survival model:
+
+```{r, eval = FALSE}
+library(survival)
+data <- data.frame(time = c(4, 3, 1, 1, 2, 2, 3), 
+                   status = c(1, 1, 1, 0, 1, 1, 0), 
+                   x = c(0, 2, 1, 1, 1, 0, 0), 
+                   sex = c(0, 0, 0, 0, 1, 1, 1))
+model <- coxph(Surv(time, status) ~ x + strata(sex), data)
+summary(model)
+```
+
+---
 
 ## Control flow
 
-If this do that, else do something else
+Controlling the flow of execution
 
-- `if ( ) { } else { }`
-- `ifelse()` &rarr; vectorized
+If statements:
 
+```{r, eval = FALSE}
+if (cond) {expr}
+if (cond) {expr} else {alt.expr}
+```
 
-## Control flow example
+Loops:
 
-```{r}
+```{r, eval = FALSE}
+for (var in seq) {expr}
+while (cond) {expr}
+repeat {expr}
+break
+next
+```
+
+---
+
+## If statement example
+
+Within a function:
+
+```{r, eval = FALSE}
 math <- function(x, y) {
   z <- x + y
   
@@ -538,41 +729,77 @@ math <- function(x, y) {
 }
 
 math(2, 2)
-
 math(7, 7)
 ```
 
+---
+
+## While loop example
+
+```{r, eval = FALSE}
+i <- 1
+while (i < 100) {
+  print(i)
+  i = i * 2
+}
+```
+
+---
 
 ## Iteration
 
-Do the same thing to multiple inputs
+Loop over multiple inputs and perform some task
 
-Two approaches to iteration:
+Two approaches:
 
-- `for ( ) { }` and `while ( ) { }` loops
-- `*apply()` family of functions &rarr; vectorized, preferred approach
+1. `for` loops
+2. `*apply()` family of functions
   - `lapply()`, `sapply()`, `vapply()`, `tapply()`, `mapply()`
-  - return different data structures
+  - different use cases
 
+---
 
-## Iteration example: `lapply()`
+## Iteration examples
 
-```{r}
-data <- data.frame(matrix(rnorm(25), ncol = 5))
-lapply(data, mean)
+```{r, eval = FALSE}
+mats <- list(matrix(rnorm(25), ncol = 5),
+             matrix(rnorm(25), ncol = 5),
+             matrix(rnorm(25), ncol = 5))
+
+for (i in seq_along(mats)) {
+  print(eigen(mats[[i]]))
+}
+
+lapply(mats, eigen)
+
+mats2 <- list(matrix(rnorm(25), ncol = 5),
+              matrix(rnorm(25), ncol = 5),
+              matrix(rnorm(25), ncol = 5))
+
+mapply(crossprod, mats, mats2, SIMPLIFY = FALSE)
 ```
 
+---
 
-## R scripts
+## Exercise 7
 
-- A script is a set of commands run in sequence
-- Documents your analysis and workflows, enables reproducibility
+Loop over a list of datasets and summarize them
+
+---
+
+## Scripting
+
+- A script is a file with a set of commands to be run in sequence
 - Text file saved with `.R` extension
+- Documents your analysis and workflows
+- Enables reproducibility
 - Write comments by starting line with `#`
-- To run:
+- Typically best to organize scripts in a modular way
+- To run R scripts:
   - Within R console: `source()`
   - In the shell: `Rscript`
 
+---
 
 ## Script example
 
@@ -588,25 +815,41 @@ Save  as `setosa.R`
 
 In the shell, run with `Rscript setosa.R`
 
+---
 
 ## Packages to consider
 
-- `data.table` for speed
+- `data.table` for fast, efficient data processing
 - `tidyverse` family of packages
   - `readr`, `tidyr`, `dplyr`, `purrr`
-- `skimr` for better summary statistics
+- `tidymodels` family of packages
 - `ggplot2` for advanced graphics
 - `sf` for spatial data
+- `renv` for reproducible package environments
 
+---
 
 ## Additional resources
 
-- [Using R on CARC Systems](https://carc.usc.edu/user-information/user-guides/software-and-programming/r)
-- `install.packages("swirl")`
+- [Swirl - Learn R in R](https://swirlstats.com/)
 - [R for Reproducible Scientific Analysis lessons](https://swcarpentry.github.io/r-novice-gapminder/)
+- [RStudio Primers](https://rstudio.cloud/learn/primers)
 - [R Manuals](https://cran.r-project.org/manuals.html)
+- [R package documentation](https://rdrr.io/)  
+- [R cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
 - Web books
   - [Hands-on Programming with R](https://rstudio-education.github.io/hopr/)
   - [An Introduction to R](https://intro2r.com/)
   - [R Programming for Data Science](https://bookdown.org/rdpeng/rprogdatascience/)
   - [R for Data Science](https://r4ds.had.co.nz/)
+
+---
+
+## CARC support
+
+- [Using R on CARC Systems](https://carc.usc.edu/user-information/user-guides/software-and-programming/r)
+- [Submit a support ticket](https://carc.usc.edu/user-information/ticket-submission)
+- [User Forum](https://hpc-discourse.usc.edu/)
+- Office Hours
+  - Every Tuesday 2:30-5pm
+  - Register [here](https://carc.usc.edu/news-and-events/events)
