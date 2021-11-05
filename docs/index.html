@@ -13,7 +13,7 @@ class: left, top, title-slide
 
 # Introduction to R
 ### Derek Strong <br> dstrong[at]usc.edu <br> <br> Center for Advanced Research Computing <br> University of Southern California <br>
-### Last updated on 2021-09-24
+### Last updated on 2021-11-05
 
 ---
 
@@ -21,33 +21,19 @@ class: left, top, title-slide
 
 
 
-
-
-## Learning objectives
-
-- Explain the purpose of R
-- Use objects and functions
-- Perform basic data analysis tasks in R
-  - Read and write data
-  - Summarize data
-  - Visualize data
-  - Model data
-- Develop and run an R script
-- Use R on CARC systems
-
----
 
 ## Outline
 
-1. Base R and packages
-2. Objects and functions
-3. Importing and exporting data
-4. Summarizing data
-5. Visualizing data
-6. Modeling data
-7. Control flow
-8. Iteration
-9. Scripting
+1. What is R?
+2. Base R and packages
+3. Objects and functions
+4. Importing and exporting data
+5. Summarizing data
+6. Visualizing data
+7. Modeling data
+8. Control flow
+9. Iteration
+10. Scripting
 
 ---
 
@@ -56,8 +42,24 @@ class: left, top, title-slide
 ![R](./images/Rlogo.png)
 
 - A programming environment and language for statistical computing and graphics
-  - A multi-paradigm programming language
-  - A high-level (human-friendly) interpreted scripting language
+- A multi-paradigm programming language
+- A high-level (human-friendly) interpreted scripting language
+
+---
+
+## History of R
+
+- Initially developed by statisticians at University of Auckland (1993)
+- Imitates syntax of older S language developed at Bell Labs (1976)
+- Uses open-source licenses (GNU GPL)
+- Intended as a high-level interface to numerous algorithms
+- Designed to make data analysis easier
+  - Relative to compiled languages (C/C++/Fortran)
+  - Emphasis on interactive data analysis
+  - Rapid prototyping, high productivity
+  - Ability to move from user to developer
+- Base R is mostly written in C as well as Fortran and R
+- R packages are mostly written in R and C/C++
 
 ---
 
@@ -68,6 +70,7 @@ class: left, top, title-slide
   - Julia
   - Stata
   - SAS
+  - SPSS
 - Advantages
   - Designed for statistical computing
   - Free/libre/open source
@@ -149,12 +152,13 @@ Type 'q()' to quit R.
 
 ## Base R and packages
 
-- A package is a formal collection of related R functions, objects, classes, etc.
+- A **package** is a formal collection of related R functions, objects, classes, etc.
 - Base R is a stable set of core packages
 - Some base packages are loaded automatically when starting a new R session
 - Other packages that extend base R need to be installed
   - On Linux, most packages are compiled (if they contain C/C++/Fortran programs)
   - On macOS or Windows, binary versions are downloaded by default
+- Over 18,000 packages available
 
 *There's more than one way to do something in R*
 
@@ -168,13 +172,19 @@ Main repositories:
 - [Bioconductor](https://www.bioconductor.org/)
 - Development versions from GitHub, GitLab, etc.
 
-Install or remove with:
+Install with:
 
 
 ```r
 install.packages("package")
 BiocManager::install("package")
 remotes::install_github("org/package")
+```
+
+Remove with:
+
+
+```r
 remove.packages("package")
 ```
 
@@ -186,14 +196,6 @@ library(package)
 ```
 
 *See [`renv`](https://cran.r-project.org/package=renv) package for reproducible package environments*
-
----
-
-## Exercise 1
-
-Install and load the `data.table` package
-
-Get R session info with `sessionInfo()`
 
 ---
 
@@ -219,7 +221,7 @@ Two fundamental principles:
 
 Atomic types:
 
-- double (aka numeric or floating point)
+- double (aka numeric / double-precision float)
 - integer (aka numeric)
 - complex
 - character (aka string)
@@ -270,6 +272,8 @@ vec &lt;- c(1, 2, 3, 4)
 - `&lt;-` is the assignment operator
 - `c()` creates a vector object
 - `c(1, 2, 3, 4)` is the value of the object
+- Names and values are different
+- Names are assigned to values
 
 ---
 
@@ -314,6 +318,9 @@ missing[!is.na(missing)]
 - Probably the most commonly used data structure
 - 2d with a mix of numeric, character, factor, etc. columns
 - Technically implemented as a list (set of vectors with the same length)
+- Enhanced versions of data frames
+  - data table from `data.table`
+  - tibble from `tidyverse`
 
 Example:
 
@@ -346,14 +353,6 @@ as.list(iris)
 
 ---
 
-## Exercise 2
-
-Create a list of two atomic vectors of different types and lengths
-
-Display the structure of that list
-
----
-
 ## The functional perspective
 
 R is mostly used as a functional programming language
@@ -364,13 +363,13 @@ Inputs and outputs:
 
 Example:
 
-.center[data frame &amp;rarr; `summary()` &amp;rarr; table of summary statistics]
+.center[data frame &amp;rarr; `tail()` &amp;rarr; last rows of data frame]
 
 ---
 
 ## Functions
 
-A function is a unit of code that takes an input and produces an output
+A **function** is a unit of code that takes an input and produces an output
 
 Generic structure of functions in R:
 
@@ -482,12 +481,6 @@ library(help = "pkg")
 
 ---
 
-## Exercise 3
-
-Create a function that performs some sequence of arithmetic
-
----
-
 ## Working with files
 
 Main functions:
@@ -507,20 +500,12 @@ Best to avoid base R and use other packages:
 | Data format | Package |
 |---|---|
 | Text | `readr`, `vroom`, `data.table` |
-| Binary | `arrow` |
+| Binary | `arrow`, `fst` |
 | Foreign | `foreign`, `haven` |
 | Database | `odbc`, `DBI`, `RMariaDB`, `RPostgreSQL`, `RSQLite` |
 | HDF5 | `hdf5r` |
 | NetCDF | `ncdf4`, `RNetCDF` |
 | Spatial | `raster`, `sf`, `terra`, `stars` |
-
----
-
-## Exercise 4
-
-Import a CSV file using the `readr` package
-
-Export a CSV file using the `readr` package
 
 ---
 
@@ -633,12 +618,6 @@ skim(iris)
 
 ---
 
-## Exercise 5
-
-Summarize the airquality dataset
-
----
-
 ## Visualizing data
 
 Many graphics functions:
@@ -647,31 +626,54 @@ Many graphics functions:
 - `png()`, `jpeg()`, `tiff()`, `pdf()`
 - Many options for customizing graphics
 - Other packages:
-  - `ggplot2`
-  - `leaflet`
-  - `plotly`
-  - `shiny`
+  - `ggplot2` &amp;mdash; for advanced graphics
+  - `leaflet` &amp;mdash; for web-based interactive maps
+  - `plotly` &amp;mdash; for web-based interactive visualization
+  - `shiny` &amp;mdash; for web-based interactive data apps
 
 ---
 
-## Graphics examples
+## Scatter plot example
+
+
+```r
+plot(iris$Sepal.Length, iris$Sepal.Width)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-24-1.png" width="500px" height="400px" /&gt;
+
+---
+
+## Line plot example
+
+
+```r
+plot(uspop)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-25-1.png" width="500px" height="400px" /&gt;
+
+---
+
+## Histogram example
 
 
 ```r
 hist(iris$Sepal.Length)
-boxplot(iris$Sepal.Length)
-plot(iris$Sepal.Length, iris$Sepal.Width)
+```
 
+&lt;img src="index_files/figure-html/unnamed-chunk-26-1.png" width="500px" height="400px" /&gt;
+
+---
+
+## Saving graphics
+
+
+```r
 png("uspop.png")
 plot(uspop)
 dev.off()
 ```
-
----
-
-## Exercise 6
-
-Plot the discoveries dataset
 
 ---
 
@@ -686,9 +688,9 @@ The base `stats` package has many statistical functions:
 
 ---
 
-## Model examples
+## Model example
 
-Linear model:
+Simple linear model:
 
 
 ```r
@@ -696,19 +698,6 @@ model &lt;- lm(Sepal.Length ~ Sepal.Width + Species, iris)
 summary(model)
 AIC(model)
 BIC(model)
-```
-
-Survival model:
-
-
-```r
-library(survival)
-data &lt;- data.frame(time = c(4, 3, 1, 1, 2, 2, 3), 
-                   status = c(1, 1, 1, 0, 1, 1, 0), 
-                   x = c(0, 2, 1, 1, 1, 0, 0), 
-                   sex = c(0, 0, 0, 0, 1, 1, 1))
-model &lt;- coxph(Surv(time, status) ~ x + strata(sex), data)
-summary(model)
 ```
 
 ---
@@ -809,12 +798,6 @@ mapply(crossprod, mats, mats2, SIMPLIFY = FALSE)
 
 ---
 
-## Exercise 7
-
-Loop over a list of datasets and summarize them
-
----
-
 ## Scripting
 
 - A script is a file with a set of commands to be run in sequence
@@ -882,6 +865,20 @@ In the shell, run with `Rscript setosa.R`
 - Office Hours
   - Every Tuesday 2:30-5pm
   - Register [here](https://carc.usc.edu/news-and-events/events)
+
+---
+
+## Exercises
+
+1. Install and load the `data.table` package
+2. Get R session info with `sessionInfo()`
+3. Create a list of two atomic vectors of different types and lengths
+4. Display the structure of that list
+5. Create a function that performs some sequence of arithmetic
+6. Import and export a CSV file using the `vroom` package
+7. Summarize the airquality dataset
+8. Plot the discoveries dataset
+9. Loop over a list of datasets and summarize them
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
