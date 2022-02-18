@@ -4,7 +4,7 @@
     <title>Introduction to R</title>
     <meta charset="utf-8" />
     <meta name="author" content="Derek Strong dstrong[at]usc.edu  Center for Advanced Research Computing University of Southern California " />
-    <script src="index_files/header-attrs-2.10/header-attrs.js"></script>
+    <script src="index_files/header-attrs-2.11/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
@@ -88,10 +88,12 @@ class: left, top, title-slide
 - Multiple versions installed on CARC systems
   - `module purge`
   - `module load gcc/11.2.0 openblas/0.3.18 r/4.1.2`
+  - Save a custom default module collection with `module save`
+  - Then load it with `module restore` when you log in
 - Also consider using an integrated development environment (IDE)
   - [RStudio](https://www.rstudio.com/)
   - [JupyterLab](https://jupyter.org/)
-  - Via [CARC OnDemand](https://carc-ondemand.usc.edu)
+  - On CARC systems, use via [CARC OnDemand](https://carc-ondemand.usc.edu)
 
 ---
 
@@ -158,6 +160,7 @@ Type 'q()' to quit R.
   - On Linux, most packages are compiled (if they contain C/C++/Fortran programs)
   - On macOS or Windows, binary versions are downloaded by default
 - Over 18,000 packages available
+- See [`renv`](https://rstudio.github.io/renv/) package for reproducible package environments
 
 *There's more than one way to do something in R*
 
@@ -180,13 +183,6 @@ BiocManager::install("package")
 remotes::install_github("org/package")
 ```
 
-Remove with:
-
-
-```r
-remove.packages("package")
-```
-
 Load with:
 
 
@@ -194,7 +190,12 @@ Load with:
 library(package)
 ```
 
-*See [`renv`](https://cran.r-project.org/package=renv) package for reproducible package environments*
+Remove with:
+
+
+```r
+remove.packages("package")
+```
 
 ---
 
@@ -236,14 +237,15 @@ Atomic types:
 - logical (`TRUE` or `FALSE`)
 - raw
 
-Other classes based on atomic types:
+Other types based on atomic types:
 
 - factor (categorical, based on integer)
 - Date, POSIXct, POSIXlt, difftime, ts (based on double)
 
-Other packages provide other types:
+Some packages provide other types:
 
 - [float](https://cran.r-project.org/web/packages/float/index.html) provides single precision float
+- [lubridate](https://lubridate.tidyverse.org/) and [hms](https://hms.tidyverse.org/) for dates and times
 
 ---
 
@@ -290,6 +292,8 @@ vec &lt;- c(1, 2, 3, 4)
 ---
 
 ## Inspecting objects
+
+Various functions:
 
 - `ls()` to list objects
 - `rm()` to remove objects
@@ -505,12 +509,14 @@ Main functions:
 
 ## Importing and exporting data
 
-Best to avoid base R and use other packages (performance and features):
+- Best to avoid base R and use other packages (better performance and features)
+- Some options depending on data format:
 
 | Data format | Package |
 |---|---|
 | Tabular | `readr`, `vroom`, `data.table` |
-| Binary | `arrow`, `fst` |
+| Spreadsheets | `xlsx`, `readxl`, `writexl`, `googlesheets4` |
+| Binary | `arrow`, `fst`, `blob` |
 | Foreign | `foreign`, `haven` |
 | Database | `odbc`, `DBI`, `RMariaDB`, `RPostgreSQL`, `RSQLite` |
 | HDF5 | `hdf5r` |
