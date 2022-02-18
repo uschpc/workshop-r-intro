@@ -18,6 +18,8 @@ Learning objectives:
 - Develop and run an R script
 - Use R on CARC systems
 
+[Using R on CARC systems](https://www.carc.usc.edu/user-information/user-guides/software-and-programming/r)
+
 Example job scripts:
 
 - [serial.job](job-scripts/serial.job)
@@ -25,7 +27,6 @@ Example job scripts:
 
 ### Additional resources
 
-[Using R on CARC systems](https://carc.usc.edu/user-information/user-guides/software-and-programming/r)  
 [R Project](https://www.r-project.org)  
 [R Manuals](https://cran.r-project.org/manuals.html)  
 [R package documentation](https://rdrr.io/)  
