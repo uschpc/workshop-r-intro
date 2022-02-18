@@ -1,6 +1,6 @@
 ---
 title: "Introduction to R"
-author: "Derek Strong <br> dstrong[at]usc.edu <br> <br> Center for Advanced Research Computing <br> University of Southern California <br>"
+author: "Derek Strong<br>dstrong[at]usc.edu<br><br>Center for Advanced Research Computing<br>University of Southern California<br>"
 date: "Last updated on `r format(Sys.time(), '%Y-%m-%d')`"
 output:
   xaringan::moon_reader:
@@ -88,11 +88,12 @@ style_mono_light(
 
 - Find instructions on [CRAN](https://cran.r-project.org/)
 - Multiple versions installed on CARC systems
-  - `module load usc r`
-  - `module load usc r/<version>`
+  - `module purge`
+  - `module load gcc/11.2.0 openblas/0.3.18 r/4.1.2`
 - Also consider using an integrated development environment (IDE)
   - [RStudio](https://www.rstudio.com/)
   - [JupyterLab](https://jupyter.org/)
+  - Via [CARC OnDemand](https://carc-ondemand.usc.edu)
 
 ---
 
@@ -114,15 +115,13 @@ Focus on the R console for learning R:
 ```{r, eval = FALSE}
 $ R
 
-R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
 Copyright (C) 2021 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin17.0 (64-bit)
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
-
-  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -197,6 +196,15 @@ library(package)
 
 ---
 
+## Some R tips
+
+- R has case sensitive syntax
+- Use up/down arrow keys to cycle through command history
+- Use `tab` for auto-completion
+- Spacing can be important (mostly for readability)
+
+---
+
 ## Objects and functions
 
 Two fundamental principles:
@@ -219,7 +227,7 @@ Two fundamental principles:
 
 Atomic types:
 
-- double (aka numeric / double-precision float)
+- double (aka numeric / double precision float)
 - integer (aka numeric)
 - complex
 - character (aka string)
@@ -230,6 +238,10 @@ Other classes based on atomic types:
 
 - factor (categorical, based on integer)
 - Date, POSIXct, POSIXlt, difftime, ts (based on double)
+
+Other packages provide other types:
+
+- [float](https://cran.r-project.org/web/packages/float/index.html) provides single precision float
 
 ---
 
@@ -385,13 +397,14 @@ Notes on using functions:
 
 ## Function example
 
-Variations of a `summary()` function call:
+Variations of a `tail()` function call:
 
 ```{r, eval = FALSE}
-summary(iris)
-summary(object = iris)
-summary(iris, digits = 5)
-base::summary(iris)
+tail(iris)
+tail(x = iris)
+tail(iris, 10)
+tail(iris, n = c(5, 2))
+utils::tail(iris)
 ```
 
 ---
@@ -401,27 +414,24 @@ base::summary(iris)
 Function within a function example:
 
 ```{r, eval = FALSE}
-str(summary(iris))
+str(tail(iris))
 ```
 
 Or explicitly create intermediate objects:
 
 ```{r, eval = FALSE}
-sum <- summary(iris)
-str(sum)
-rm(sum)
+last <- tail(iris)
+str(last)
+rm(last)
 ```
 
-Or use pipe operator `%>%` from `magrittr` package:
+Or use pipe operator `|>` (may improve code readability):
 
 ```{r, eval = FALSE}
-library(magrittr)
-iris %>%
-  summary() %>%
+iris |>
+  tail() |>
   str()
 ```
-
-*May improve code readability*
 
 ---
 
@@ -479,11 +489,11 @@ Main functions:
 
 ## Importing and exporting data
 
-Best to avoid base R and use other packages:
+Best to avoid base R and use other packages (performance and features):
 
 | Data format | Package |
 |---|---|
-| Text | `readr`, `vroom`, `data.table` |
+| Tabular | `readr`, `vroom`, `data.table` |
 | Binary | `arrow`, `fst` |
 | Foreign | `foreign`, `haven` |
 | Database | `odbc`, `DBI`, `RMariaDB`, `RPostgreSQL`, `RSQLite` |
@@ -607,14 +617,14 @@ Many graphics functions:
 - Other packages:
   - `ggplot2` &mdash; for advanced graphics
   - `leaflet` &mdash; for web-based interactive maps
-  - `plotly` &mdash; for web-based interactive visualization
+  - `plotly` &mdash; for web-based interactive visualizations
   - `shiny` &mdash; for web-based interactive data apps
 
 ---
 
 ## Scatter plot example
 
-```{r, out.height = "400px", out.width = "500px"}
+```{r, out.height = "400px", out.width = "400px"}
 plot(iris$Sepal.Length, iris$Sepal.Width)
 ```
 
@@ -622,7 +632,7 @@ plot(iris$Sepal.Length, iris$Sepal.Width)
 
 ## Line plot example
 
-```{r, out.height = "400px", out.width = "500px"}
+```{r, out.height = "400px", out.width = "400px"}
 plot(uspop)
 ```
 
@@ -630,13 +640,15 @@ plot(uspop)
 
 ## Histogram example
 
-```{r, out.height = "400px", out.width = "500px"}
+```{r, out.height = "400px", out.width = "400px"}
 hist(iris$Sepal.Length)
 ```
 
 ---
 
 ## Saving graphics
+
+For base R:
 
 ```{r, eval = FALSE}
 png("uspop.png")
@@ -805,12 +817,13 @@ In the shell, run with `Rscript setosa.R`
 
 ## Additional resources
 
-- [Swirl - Learn R in R](https://swirlstats.com/)
-- [R for Reproducible Scientific Analysis lessons](https://swcarpentry.github.io/r-novice-gapminder/)
-- [RStudio Primers](https://rstudio.cloud/learn/primers)
 - [R Manuals](https://cran.r-project.org/manuals.html)
 - [R package documentation](https://rdrr.io/)  
 - [R cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
+- Tutorials
+  - [Swirl - Learn R in R](https://swirlstats.com/)
+  - [R for Reproducible Scientific Analysis lessons](https://swcarpentry.github.io/r-novice-gapminder/)
+  - [RStudio Primers](https://rstudio.cloud/learn/primers)
 - Web books
   - [Hands-on Programming with R](https://rstudio-education.github.io/hopr/)
   - [An Introduction to R](https://intro2r.com/)
@@ -821,12 +834,12 @@ In the shell, run with `Rscript setosa.R`
 
 ## CARC support
 
-- [Using R on CARC Systems](https://carc.usc.edu/user-information/user-guides/software-and-programming/r)
-- [Submit a support ticket](https://carc.usc.edu/user-information/ticket-submission)
+- [Using R on CARC Systems](https://www.carc.usc.edu/user-information/user-guides/software-and-programming/r)
+- [Submit a support ticket](https://www.carc.usc.edu/user-information/ticket-submission)
 - [User Forum](https://hpc-discourse.usc.edu/)
 - Office Hours
   - Every Tuesday 2:30-5pm
-  - Register [here](https://carc.usc.edu/news-and-events/events)
+  - Register [here](https://www.carc.usc.edu/news-and-events/events)
 
 ---
 
