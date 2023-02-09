@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(xaringanthemer)
 style_mono_light(
   base_color = "#27323f",
-  code_font_google   = google_font("Andale Mono"),
+  code_font_google = google_font("Andale Mono"),
   code_font_size = "0.8rem",
   link_decoration = "underline",
 )
@@ -87,15 +87,15 @@ style_mono_light(
 ## Installing R
 
 - Find instructions on [CRAN](https://cran.r-project.org/)
-- Multiple versions installed on CARC systems
+- Multiple versions installed on CARC HPC clusters
   - `module purge`
-  - `module load gcc/11.2.0 openblas/0.3.18 r/4.1.2`
+  - `module load gcc/11.3.0 openblas/0.3.20 r/4.2.1`
   - Save a custom default module collection with `module save`
   - Then load it with `module restore` when you log in
 - Also consider using an integrated development environment (IDE)
-  - [RStudio](https://www.rstudio.com/)
+  - [RStudio](https://posit.co/products/open-source/rstudio/)
   - [JupyterLab](https://jupyter.org/)
-  - On CARC systems, use via [CARC OnDemand](https://carc-ondemand.usc.edu)
+  - Available to use via [CARC OnDemand](https://ondemand.carc.usc.edu)
 
 ---
 
@@ -117,13 +117,15 @@ Focus on the R console for learning R:
 ```{r, eval = FALSE}
 $ R
 
-R version 4.1.2 (2021-11-01) -- "Bird Hippie"
-Copyright (C) 2021 The R Foundation for Statistical Computing
+R version 4.2.1 (2022-06-23) -- "Funny-Looking Kid"
+Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -242,7 +244,7 @@ Other types based on atomic types:
 
 Some packages provide other types:
 
-- [float](https://cran.r-project.org/web/packages/float/index.html) provides single precision float
+- [float](https://cran.r-project.org/web/packages/float/index.html) for single precision float
 - [lubridate](https://lubridate.tidyverse.org/) and [hms](https://hms.tidyverse.org/) for dates and times
 
 ---
@@ -593,7 +595,7 @@ iris[iris$Sepal.Length > 5 | iris$Sepal.Width < 3, ]
 Other packages with subsetting functions:
 
 - `data.table`
-- `dplyr`
+- `dplyr` or `dtplyr`
 
 ---
 
@@ -813,7 +815,7 @@ In the shell, run with `Rscript setosa.R`
 
 - `data.table` for fast, efficient data processing
 - `tidyverse` family of packages
-  - `readr`, `tidyr`, `dplyr`, `purrr`
+  - `readr`, `tidyr`, `dplyr`, `dtplyr`, `purrr`
 - `tidymodels` family of packages
 - `ggplot2` for advanced graphics
 - `sf` for spatial data
@@ -823,13 +825,14 @@ In the shell, run with `Rscript setosa.R`
 
 ## Additional resources
 
+- [R Project](https://www.r-project.org)
 - [R Manuals](https://cran.r-project.org/manuals.html)
 - [R package documentation](https://rdrr.io/)  
-- [R cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
+- [R cheatsheets](https://posit.co/resources/cheatsheets/)
 - Tutorials
   - [Swirl - Learn R in R](https://swirlstats.com/)
   - [R for Reproducible Scientific Analysis lessons](https://swcarpentry.github.io/r-novice-gapminder/)
-  - [RStudio Primers](https://rstudio.cloud/learn/primers)
+  - [Posit Primers](https://posit.cloud/learn/primers)
 - Web books
   - [Hands-on Programming with R](https://rstudio-education.github.io/hopr/)
   - [An Introduction to R](https://intro2r.com/)
@@ -840,12 +843,13 @@ In the shell, run with `Rscript setosa.R`
 
 ## CARC support
 
-- [Using R on CARC Systems](https://www.carc.usc.edu/user-information/user-guides/software-and-programming/r)
+- [Using R on CARC HPC clusters](https://www.carc.usc.edu/user-information/user-guides/software-and-programming/r)
+- [R package installation guide](https://hpc-discourse.usc.edu/t/r-package-installation-guide/653)
 - [Submit a support ticket](https://www.carc.usc.edu/user-information/ticket-submission)
 - [User Forum](https://hpc-discourse.usc.edu/)
 - Office Hours
   - Every Tuesday 2:30-5pm
-  - Register [here](https://www.carc.usc.edu/news-and-events/events)
+  - Get Zoom link [here](https://www.carc.usc.edu/education-and-resources/office-hours)
 
 ---
 

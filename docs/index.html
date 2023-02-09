@@ -4,16 +4,22 @@
     <title>Introduction to R</title>
     <meta charset="utf-8" />
     <meta name="author" content="Derek Strong dstrong[at]usc.edu  Center for Advanced Research Computing University of Southern California " />
-    <script src="index_files/header-attrs-2.11/header-attrs.js"></script>
+    <script src="index_files/header-attrs-2.14/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
 class: left, top, title-slide
 
+.title[
 # Introduction to R
+]
+.author[
 ### Derek Strong<br>dstrong[at]usc.edu<br><br>Center for Advanced Research Computing<br>University of Southern California<br>
-### Last updated on 2022-02-18
+]
+.date[
+### Last updated on 2023-02-09
+]
 
 ---
 
@@ -85,15 +91,15 @@ class: left, top, title-slide
 ## Installing R
 
 - Find instructions on [CRAN](https://cran.r-project.org/)
-- Multiple versions installed on CARC systems
+- Multiple versions installed on CARC HPC clusters
   - `module purge`
-  - `module load gcc/11.2.0 openblas/0.3.18 r/4.1.2`
+  - `module load gcc/11.3.0 openblas/0.3.20 r/4.2.1`
   - Save a custom default module collection with `module save`
   - Then load it with `module restore` when you log in
 - Also consider using an integrated development environment (IDE)
-  - [RStudio](https://www.rstudio.com/)
+  - [RStudio](https://posit.co/products/open-source/rstudio/)
   - [JupyterLab](https://jupyter.org/)
-  - On CARC systems, use via [CARC OnDemand](https://carc-ondemand.usc.edu)
+  - Available to use via [CARC OnDemand](https://ondemand.carc.usc.edu)
 
 ---
 
@@ -116,13 +122,15 @@ Focus on the R console for learning R:
 ```r
 $ R
 
-R version 4.1.2 (2021-11-01) -- "Bird Hippie"
-Copyright (C) 2021 The R Foundation for Statistical Computing
+R version 4.2.1 (2022-06-23) -- "Funny-Looking Kid"
+Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -244,7 +252,7 @@ Other types based on atomic types:
 
 Some packages provide other types:
 
-- [float](https://cran.r-project.org/web/packages/float/index.html) provides single precision float
+- [float](https://cran.r-project.org/web/packages/float/index.html) for single precision float
 - [lubridate](https://lubridate.tidyverse.org/) and [hms](https://hms.tidyverse.org/) for dates and times
 
 ---
@@ -253,7 +261,7 @@ Some packages provide other types:
 
 | Dimensions | Homogeneous data type | Heterogeneous data types |
 |---|---|---|
-| 1d | atomic vector | list |
+| 1d | atomic vector | list | 
 | 2d | matrix | data frame |
 | nd | array | |
 
@@ -613,7 +621,7 @@ iris[iris$Sepal.Length &gt; 5 | iris$Sepal.Width &lt; 3, ]
 Other packages with subsetting functions:
 
 - `data.table`
-- `dplyr`
+- `dplyr` or `dtplyr`
 
 ---
 
@@ -753,7 +761,7 @@ Within a function:
 ```r
 math &lt;- function(x, y) {
   z &lt;- x + y
-
+  
   if (z &gt; 10) {
     z * 2
   } else {
@@ -851,7 +859,7 @@ In the shell, run with `Rscript setosa.R`
 
 - `data.table` for fast, efficient data processing
 - `tidyverse` family of packages
-  - `readr`, `tidyr`, `dplyr`, `purrr`
+  - `readr`, `tidyr`, `dplyr`, `dtplyr`, `purrr`
 - `tidymodels` family of packages
 - `ggplot2` for advanced graphics
 - `sf` for spatial data
@@ -861,13 +869,14 @@ In the shell, run with `Rscript setosa.R`
 
 ## Additional resources
 
+- [R Project](https://www.r-project.org)
 - [R Manuals](https://cran.r-project.org/manuals.html)
-- [R package documentation](https://rdrr.io/)
-- [R cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
+- [R package documentation](https://rdrr.io/)  
+- [R cheatsheets](https://posit.co/resources/cheatsheets/)
 - Tutorials
   - [Swirl - Learn R in R](https://swirlstats.com/)
   - [R for Reproducible Scientific Analysis lessons](https://swcarpentry.github.io/r-novice-gapminder/)
-  - [RStudio Primers](https://rstudio.cloud/learn/primers)
+  - [Posit Primers](https://posit.cloud/learn/primers)
 - Web books
   - [Hands-on Programming with R](https://rstudio-education.github.io/hopr/)
   - [An Introduction to R](https://intro2r.com/)
@@ -878,12 +887,13 @@ In the shell, run with `Rscript setosa.R`
 
 ## CARC support
 
-- [Using R on CARC Systems](https://www.carc.usc.edu/user-information/user-guides/software-and-programming/r)
+- [Using R on CARC HPC clusters](https://www.carc.usc.edu/user-information/user-guides/software-and-programming/r)
+- [R package installation guide](https://hpc-discourse.usc.edu/t/r-package-installation-guide/653)
 - [Submit a support ticket](https://www.carc.usc.edu/user-information/ticket-submission)
 - [User Forum](https://hpc-discourse.usc.edu/)
 - Office Hours
   - Every Tuesday 2:30-5pm
-  - Register [here](https://www.carc.usc.edu/news-and-events/events)
+  - Get Zoom link [here](https://www.carc.usc.edu/education-and-resources/office-hours)
 
 ---
 
@@ -943,6 +953,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
